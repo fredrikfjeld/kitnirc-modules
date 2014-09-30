@@ -31,11 +31,11 @@ class TestModule(Module):
         self.remove_command(client, "topic", "TOPIC")
 
     def start(self, *args, **kwargs):
-        super(BananasModule, self).start(*args, **kwargs)
+        super(TestModule, self).start(*args, **kwargs)
         self.register_commands(self.controller.client)
 
     def stop(self, *args, **kwargs):
-        super(BananasModule, self).stop(*args, **kwargs)
+        super(TestModule, self).stop(*args, **kwargs)
         self.unregister_commands(self.controller.client)
 
     @Module.handle("TOPIC")
