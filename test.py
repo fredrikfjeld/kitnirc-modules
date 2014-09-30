@@ -40,7 +40,7 @@ class TestModule(Module):
 
     @Module.handle("TOPIC")
     def bananas(self, client, actor, recipient, *args):
-        client.reply(recipient, actor, "Topic og sånn")
+        client.reply(recipient, actor, "Topic og drit")
         return True
 
 
