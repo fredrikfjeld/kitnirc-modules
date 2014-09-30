@@ -27,10 +27,10 @@ class TestModule(Module):
 
         message = message.strip()
 
-        if message == "help"
+        if message == "help":
             client.reply(recipient, actor, "My commands are:")
             client.reply(recipient, actor, "  topic - sets topic. Usage: topic <topic>")
-        else
+        else:
             command = message.split(" ", 1)[0]
             client.reply(recipient, actor, "Command: '%s' - message: '%s'." % command, message)
 
