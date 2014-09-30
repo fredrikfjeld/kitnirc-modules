@@ -16,34 +16,31 @@ class TestModule(Module):
     # This decorator tells KitnIRC what events to route to the
     # function it decorates. The name of the function itself
     # doesn't matter - call it what makes sense.
-    @Module.handle("PRIVMSG")
-    def respond(self, client, actor, recipient, message):
-        if isinstance(recipient, Channel):
-            # Only pay attention if addressed directly in channels
-            if not message.startswith("%s:" % client.user.nick):
-                return
-            # Remove our being addressed from the message
-            message = message.split(":", 1)[1]
+    def add_command(self, client, command, event, helptext=None):
+        self.trigger_event("ADDCOMMAND", client, [command, event, helptext])
 
-        message = message.strip()
+    def remove_command(self, client, command, event):
+        self.trigger_event("REMOVECOMMAND", client, [command, event])
 
-        if message == "help":
-            client.reply(recipient, actor, "My commands are:")
-            client.reply(recipient, actor, "  topic - sets topic. Usage: topic <topic>")
-        else:
-            command = message.split(" ", 1)[0]
-            client.reply(recipient, actor, "Command: '%s' - message: '%s'." % command, message)
+    @Module.handle("COMMANDS")
+    def register_commands(self, client, *args):
+        _log.info("Registering commands...")
+        self.add_command(client, "topic", "TOPIC")
 
-        # Log a message to the INFO log level - see here for more details:
-        # http://docs.python.org/2/library/logging.html
-        _log.info("Responding to %r in %r", actor, recipient)
+    def unregister_commands(self, client):
+        self.remove_command(client, "topic", "TOPIC")
 
-        # The 'reply' function automatically sends a replying PM if
-        # the bot was PM'd, or addresses the user in a channel who
-        # addressed the bot in a channel.
-        client.reply(recipient, actor, "I saw you say '%s'." % message)
+    def start(self, *args, **kwargs):
+        super(BananasModule, self).start(*args, **kwargs)
+        self.register_commands(self.controller.client)
 
-        # Stop any other modules from handling this message.
+    def stop(self, *args, **kwargs):
+        super(BananasModule, self).stop(*args, **kwargs)
+        self.unregister_commands(self.controller.client)
+
+    @Module.handle("TOPIC")
+    def bananas(self, client, actor, recipient, *args):
+        client.reply(recipient, actor, "Topic og sånn")
         return True
 
 
