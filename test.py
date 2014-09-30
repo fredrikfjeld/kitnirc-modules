@@ -27,6 +27,13 @@ class TestModule(Module):
 
         message = message.strip()
 
+        if message == "help"
+            client.reply(recipient, actor, "My commands are:")
+            client.reply(recipient, actor, "  topic - sets topic. Usage: topic <topic>")
+        else
+            command = message.split(" ", 1)[0]
+            client.reply(recipient, actor, "Command: '%s' - message: '%s'." % command, message)
+
         # Log a message to the INFO log level - see here for more details:
         # http://docs.python.org/2/library/logging.html
         _log.info("Responding to %r in %r", actor, recipient)
@@ -34,7 +41,6 @@ class TestModule(Module):
         # The 'reply' function automatically sends a replying PM if
         # the bot was PM'd, or addresses the user in a channel who
         # addressed the bot in a channel.
-        client.reply(recipient, actor, "Hello, welcome to my world!")
         client.reply(recipient, actor, "I saw you say '%s'." % message)
 
         # Stop any other modules from handling this message.
