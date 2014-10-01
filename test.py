@@ -39,8 +39,13 @@ class TestModule(Module):
         self.unregister_commands(self.controller.client)
 
     @Module.handle("TOPIC")
+<<<<<<< HEAD
     def topic(self, client, actor, recipient, *args):
         client.reply(recipient, actor, "Topic og drit")
+=======
+    def bananas(self, client, actor, recipient, *args):
+        client.reply(recipient, actor, "Topic og sånn")
+>>>>>>> parent of 93e2a42... ascii helvete
         return True
 
 
