@@ -34,7 +34,7 @@ class TestModule(Module):
             args = args[1:]
             if command == '!test':
                 self.controller.client.msg(recipient, "Fin test!")
-
+    return True
 
 # Let KitnIRC know what module class it should be loading.
 module = TestModule
