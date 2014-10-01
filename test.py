@@ -16,7 +16,7 @@ class TestModule(Module):
     # This decorator tells KitnIRC what events to route to the
     # function it decorates. The name of the function itself
     # doesn't matter - call it what makes sense.
-    def add_command(self, client, command, event, helptext=None):
+    def add_command(self, client, command, event, helptext="Hjelpetekst"):
         self.trigger_event("ADDCOMMAND", client, [command, event, helptext])
 
     def remove_command(self, client, command, event):
