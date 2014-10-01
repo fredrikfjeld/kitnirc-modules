@@ -18,23 +18,23 @@ class TestModule(Module):
     # doesn't matter - call it what makes sense.
     @Module.handle("PRIVSMG")
     def respond(self, client, actor, recipient, message):
-        _log.info("recipient is: %s", recipient)
-        actor = User(actor)
-        if ininstance(recipient, Channel):
-            self.reply_to = recipient
+        if isinstance(recipient, Channel):
+            # Only pay attention if addressed directly in channels
+            if not message.startswith("!"):
+                return
         else:
-            self.reply_to = actor
-        _log.info("Actor is: %s", actor)
+            if not message.startswith("!"):
+                return
+
         message = message.strip()
         args = message.split(" ")
-        command = args[0]
-        _log.info("Command: %r - Args: %r", command, args)
-        
-        if len(args) >= 2:
-            args = args[1:]
-            if command == '!test':
-                self.controller.client.msg(recipient, "Fin test!")
+
+        _log.info("Got command: %r - Argument: %r", args[0], args[1])
+
+        client.reply(recipient, actor, "Fin kommando! Kommandoen var '%r' og argumentet var '%r'.")
+
         return True
+
 
 # Let KitnIRC know what module class it should be loading.
 module = TestModule
