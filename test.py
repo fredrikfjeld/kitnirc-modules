@@ -39,7 +39,7 @@ class TestModule(Module):
         self.unregister_commands(self.controller.client)
 
     @Module.handle("TOPIC")
-    def bananas(self, client, actor, recipient, *args):
+    def topic(self, client, actor, recipient, *args):
         client.reply(recipient, actor, "Topic og drit")
         return True
 
