@@ -1,6 +1,6 @@
 import logging
 
-from kitnirc.client import Channel
+from kitnirc.client import Channel, User
 from kitnirc.modular import Module
 
 
@@ -34,7 +34,7 @@ class TestModule(Module):
             args = args[1:]
             if command == '!test':
                 self.controller.client.msg(recipient, "Fin test!")
-    return True
+        return True
 
 # Let KitnIRC know what module class it should be loading.
 module = TestModule
