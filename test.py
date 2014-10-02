@@ -28,10 +28,12 @@ class TestModule(Module):
 
         message = message.strip()
         args = message.split(" ")
+        command = args[0]
+        argument = args[1]
 
         _log.info("Got command: %r - Argument: %r", args[0], args[1])
 
-        client.reply(recipient, actor, "Fin kommando! Kommandoen var '%r' og argumentet var '%r'.", args[0], args[1])
+        client.reply(recipient, actor, "Fin kommando! Kommandoen var '%r' og argumentet var '%r'." % (args[0], args[1]))
 
         return True
 
