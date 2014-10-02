@@ -16,7 +16,7 @@ class TestModule(Module):
     # This decorator tells KitnIRC what events to route to the
     # function it decorates. The name of the function itself
     # doesn't matter - call it what makes sense.
-    @Module.handle("PRIVSMG")
+    @Module.handle("PRIVMSG")
     def respond(self, client, actor, recipient, message):
         if isinstance(recipient, Channel):
             # Only pay attention if addressed directly in channels
