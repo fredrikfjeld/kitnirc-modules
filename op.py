@@ -44,7 +44,10 @@ class OpModule(Module):
         else:
             self.reply_to = actor
 
-        client.reply(recipient, actor, "Op til deg! Op til deg! Op til ALLE SAMMEN!")
+        if len(args) == 1:
+          client.reply(recipient, actor, "Ett argument: %r" % args)
+        else:
+          client.reply(recipient, actor, "Op til deg! Op til deg! Op til ALLE SAMMEN!")
 
         _log.info("OP requested by %s" % actor)
 
