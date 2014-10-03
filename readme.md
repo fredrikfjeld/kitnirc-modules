@@ -10,6 +10,10 @@ op [user(s)]
 topic <topic string>
 ```
 
+## log.py
+Currently just logging to the log output of the kitnirc srcipt.
+TODO: Add some text or mysql functionality.
+
 ## buffalo.py
 Banana-module, only better.
 
