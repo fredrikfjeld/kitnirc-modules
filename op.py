@@ -36,11 +36,11 @@ class OpModule(Module):
     @Module.handle('OPUSER')
     def marketquote(self, client, actor, recipient, *args):
         actor = User(actor)
-        if isinstance(recipient, Channel):
-            self.reply_to = recipient
-        else:
-            self.reply_to = actor
-        typeName = " ".join(args)
+        # if isinstance(recipient, Channel):
+        #     self.reply_to = recipient
+        # else:
+        #     self.reply_to = actor
+        # typeName = " ".join(args)
 
         _log.info("%s wants to give OP in %s." % actor, recipient)
 
