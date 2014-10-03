@@ -69,8 +69,10 @@ class OpModule(Module):
 
         if len(args) == 0:
           client.reply(recipient, actor, "Du blir OP snart.")
+          client.mode(recipient, add={'o': [actor.nick]})
         elif len(args) == 1:
           client.reply(recipient, actor, "Du vil gi OP til %s." % args[0])
+          client.mode(recipient, add={'o': [args[0]]})
         elif len(args) == 2:
           client.reply(recipient, actor, "To argumenter? Hva faen? %r og %r" % (args[0], args[1]))
         else:
