@@ -2,11 +2,14 @@ import logging
 
 from kitnirc.client import Channel, User
 from kitnirc.modular import Module
+import sys
 
 
 # This is the standard way to get a logger for your module
 # via the Python logging library.
+
 _log = logging.getLogger(__name__)
+
 
 
 # KitnIRC modules always subclass kitnirc.modular.Module
@@ -22,10 +25,10 @@ class OpModule(Module):
     @Module.handle("COMMANDS")
     def register_commands(self, client, *args):
         _log.info("Registering commands...")
-        self.add_command(client, "op", "OPUSER", "Give OP to user or self.")
+        self.add_command(client, "op", "OP", "OP someone!")
 
     def unregister_commands(self, client):
-        self.remove_command(client, "op", "OPUSER")
+        self.remove_command(client, "op", "OP")
 
     def start(self, *args, **kwargs):
         self.register_commands(self.controller.client)
@@ -33,35 +36,15 @@ class OpModule(Module):
     def stop(self, *args, **kwargs):
         self.unregister_commands(self.controller.client)
 
-    @Module.handle('OPUSER')
-    def marketquote(self, client, actor, recipient, *args):
+    @Module.handle('OP')
+    def op(self, client, actor, recipient, *args):
         actor = User(actor)
-        # if isinstance(recipient, Channel):
-        #     self.reply_to = recipient
-        # else:
-        #     self.reply_to = actor
-        # typeName = " ".join(args)
+        if isinstance(recipient, Channel):
+            self.reply_to = recipient
+        else:
+            self.reply_to = actor
 
-        _log.info("%s wants to give OP in %s." % actor, recipient)
-
-    # def respond(self, client, actor, recipient, message):
-    #
-    #       #_log.info("Got command: %r - Argument: %r", args[0], args[1])
-    #       _log.info("%s wants to give %s OP in %s." % actor, argument, recipient)
-    #       #client.reply(recipient, actor, "Fin kommando! Kommandoen var %r og argumentet var %r." % (args[0], args[1]))
-    #
-    #       return True
-    #
-    #     elif len(args) == 1:
-    #       command = args[0]
-    #
-    #       _log.info("%s wants to be OP in %s." % (actor, recipient))
-    #
-    #       return True
-    #
-    #     else:
-    #       _log.error("That's not right.")
-    #       return True
+        _log.info("fin op")
 
 
 # Let KitnIRC know what module class it should be loading.
