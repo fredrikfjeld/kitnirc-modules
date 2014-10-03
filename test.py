@@ -18,13 +18,9 @@ class TestModule(Module):
     # doesn't matter - call it what makes sense.
     @Module.handle("PRIVMSG")
     def respond(self, client, actor, recipient, message):
-        if isinstance(recipient, Channel):
-            # Only pay attention if addressed directly in channels
-            if not message.startswith("!"):
-                return
-        else:
-            if not message.startswith("!"):
-                return
+        # Only pay attention if command starts with "!"
+        if not message.startswith("!"):
+            return
 
         message = message.strip()
         args = message.split(" ")
