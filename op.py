@@ -23,9 +23,12 @@ class OpModule(Module):
     def register_commands(self, client, *args):
         _log.info("Registering commands...")
         self.add_command(client, "op", "OP", "OP someone!")
+        self.add_command(client, "topic", "TOPIC", "Set topic!")
 
     def unregister_commands(self, client):
+        _log.info("Unregistering commands...")
         self.remove_command(client, "op", "OP")
+        self.remove_command(client, "topic", "TOPIC")
 
     def start(self, *args, **kwargs):
         self.register_commands(self.controller.client)
@@ -50,7 +53,8 @@ class OpModule(Module):
           # Gi OP til den som sendte kommandoen
           client.mode(recipient, add={'o': [actor.nick]})
           _log.info("OP given to %s" % actor)
-          client.reply(recipient, actor, "Wish granted.")
+          client.emote(recipient, "gave OP.")
+          client.topic(recipient, "emne!")
 
         elif len(args) == 1:
           # Gi OP til nicket som kommer etter op-kommandoen
@@ -67,6 +71,30 @@ class OpModule(Module):
 
         else:
           client.reply(recipient, actor, "Neineinei, dette var bare tull.")
+
+    @Module.handle('TOPIC')
+    def op(self, client, actor, recipient, *args):
+        actor = User(actor)
+        if not is_admin(self.controller, client, actor):
+          _log.info("Unauthorized TOPIC attempt by %s" % actor)
+          client.reply(recipient, actor, "Du er ikke definert som en admin. Din snik.")
+          return True
+
+        if isinstance(recipient, Channel):
+            self.reply_to = recipient
+        else:
+            self.reply_to = actor
+
+        topicString = " ".join(args)
+
+        # Sett TOPIC
+        client.topic(recipient, topicString)
+        _log.info("TOPIC set to %s by %s" % (topicString, actor))
+
+        # else:
+        #   # Hvis feil antall argumenter
+        #   _log.info("%s needs some help using the TOPIC-command" % actor)
+        #   client.reply(recipient, actor, "No, that's not how you do it.")
 
 # Let KitnIRC know what module class it should be loading.
 module = OpModule
