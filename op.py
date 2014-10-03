@@ -44,7 +44,9 @@ class OpModule(Module):
         else:
             self.reply_to = actor
 
-        _log.info("fin op")
+        client.reply(recipient, actor, "Op til deg! Op til deg! Op til ALLE SAMMEN!")
+
+        _log.info("OP requested by %s" % actor)
 
 
 # Let KitnIRC know what module class it should be loading.
