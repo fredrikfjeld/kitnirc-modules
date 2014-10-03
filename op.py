@@ -76,7 +76,7 @@ class OpModule(Module):
         elif len(args) == 1:
           # Gi OP til nicket som kommer etter op-kommandoen
           client.mode(recipient, add={'o': [args[0]]})
-          _log.info("OP given to %s by %s" % args[0], actor)
+          _log.info("OP given to %s by %s" % (args[0], actor))
 
         elif len(args) == 2:
           client.reply(recipient, actor, "To argumenter? Hva faen? %r og %r" % (args[0], args[1]))
