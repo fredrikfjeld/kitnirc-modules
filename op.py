@@ -43,7 +43,6 @@ class OpModule(Module):
         typeName = " ".join(args)
 
         _log.info("%s wants to give OP in %s." % actor, recipient)
-        self.controller.client.msg(recipient, "takk %s, fin test." % actor)
 
     # def respond(self, client, actor, recipient, message):
     #
