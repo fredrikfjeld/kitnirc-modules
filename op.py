@@ -59,7 +59,7 @@ class OpModule(Module):
     def op(self, client, actor, recipient, *args):
         actor = User(actor)
         if not is_admin(self.controller, client, actor):
-            client.reply(recipient, actor, "Din snik.")
+            client.reply(recipient, actor, "Du er ikke definert som en admin. Din snik.")
             return True
 
         if isinstance(recipient, Channel):
