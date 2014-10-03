@@ -4,7 +4,6 @@ from kitnirc.client import Channel, User
 from kitnirc.modular import Module
 from kitnirc.contrib.admintools import is_admin
 
-# test
 # This is the standard way to get a logger for your module
 # via the Python logging library.
 
