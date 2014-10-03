@@ -24,15 +24,15 @@ class BuffaloModule(Module):
         self.remove_command(client, "buffalo", "BUFFALO")
 
     def start(self, *args, **kwargs):
-        super(BananasModule, self).start(*args, **kwargs)
+        super(BuffaloModule, self).start(*args, **kwargs)
         self.register_commands(self.controller.client)
 
     def stop(self, *args, **kwargs):
-        super(BananasModule, self).stop(*args, **kwargs)
+        super(BuffaloModule, self).stop(*args, **kwargs)
         self.unregister_commands(self.controller.client)
 
     @Module.handle("BUFFALO")
-    def bananas(self, client, actor, recipient, *args):
+    def buffalo(self, client, actor, recipient, *args):
         client.reply(recipient, actor, "Buffalo buffalo Buffalo buffalo buffalo buffalo Buffalo buffalo.")
         return True
 
