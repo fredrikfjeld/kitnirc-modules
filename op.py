@@ -31,7 +31,6 @@ _log = logging.getLogger(__name__)
 #   logging.debug("is_admin: %r is not an admin.", actor)
 #   return False
 
-
 # KitnIRC modules always subclass kitnirc.modular.Module
 class OpModule(Module):
     """A basic KitnIRC module which responds to messages."""
