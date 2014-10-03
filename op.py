@@ -45,9 +45,9 @@ class OpModule(Module):
             self.reply_to = actor
 
         if len(args) == 1:
-          client.reply(recipient, actor, "Ett argument: %r" % args)
+          client.reply(recipient, actor, "Ett argument: %s" % args[0])
         elif len(args) == 2:
-          client.reply(recipient, actor, "To argumenter: %r" % args)
+          client.reply(recipient, actor, "To argumenter: %s og %s" % args[0], args[1])
         else:
           client.reply(recipient, actor, "Op til deg! Op til deg! Op til ALLE SAMMEN!")
 
