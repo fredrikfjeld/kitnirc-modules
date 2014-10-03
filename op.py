@@ -46,6 +46,8 @@ class OpModule(Module):
 
         if len(args) == 1:
           client.reply(recipient, actor, "Ett argument: %r" % args)
+        elif len(args) == 2:
+          client.reply(recipient, actor, "To argumenter: %r" % args)
         else:
           client.reply(recipient, actor, "Op til deg! Op til deg! Op til ALLE SAMMEN!")
 
