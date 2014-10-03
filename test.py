@@ -33,7 +33,11 @@ class TestModule(Module):
 
         _log.info("Got command: %r - Argument: %r", args[0], args[1])
 
+<<<<<<< Updated upstream
         client.reply(recipient, actor, "Fin kommando! Kommandoen var %r og argumentet var %r." % (args[0], args[1]))
+=======
+        client.reply(recipient, actor, "Fin kommando! Kommandoen var '%r' og argumentet var '%r'.", args[0], args[1])
+>>>>>>> Stashed changes
 
         return True
 
