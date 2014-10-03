@@ -59,8 +59,9 @@ class OpModule(Module):
     def op(self, client, actor, recipient, *args):
         actor = User(actor)
         if not is_admin(self.controller, client, actor):
-            client.reply(recipient, actor, "Du er ikke definert som en admin. Din snik.")
-            return True
+          _log.info("Unauthorized OP request by %s" % actor)
+          client.reply(recipient, actor, "Du er ikke definert som en admin. Din snik.")
+          return True
 
         if isinstance(recipient, Channel):
             self.reply_to = recipient
@@ -68,18 +69,20 @@ class OpModule(Module):
             self.reply_to = actor
 
         if len(args) == 0:
-          client.reply(recipient, actor, "Du blir OP snart.")
+          # Gi OP til den som sendte kommandoen
           client.mode(recipient, add={'o': [actor.nick]})
+          _log.info("OP given to %s" % actor)
+
         elif len(args) == 1:
-          client.reply(recipient, actor, "Du vil gi OP til %s." % args[0])
+          # Gi OP til nicket som kommer etter op-kommandoen
           client.mode(recipient, add={'o': [args[0]]})
+          _log.info("OP given to %s by %s" % args[0], actor)
+
         elif len(args) == 2:
           client.reply(recipient, actor, "To argumenter? Hva faen? %r og %r" % (args[0], args[1]))
+
         else:
           client.reply(recipient, actor, "Neineinei, dette var bare tull.")
-
-        _log.info("OP requested by %s" % actor)
-
 
 # Let KitnIRC know what module class it should be loading.
 module = OpModule
