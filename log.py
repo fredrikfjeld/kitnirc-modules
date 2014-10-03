@@ -16,7 +16,7 @@ class LogModule(Module):
     @Module.handle("PRIVMSG")
     def respond(self, client, actor, recipient, message):
         message = message.strip()
-        _log.info("Comment by %r in %r: %r", actor, recipient, message)
+        _log.info("Comment by %r in %r: %r", actor, client.Channel, message)
 
 # Let KitnIRC know what module class it should be loading.
 module = LogModule
