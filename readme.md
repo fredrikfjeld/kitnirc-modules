@@ -4,6 +4,12 @@ My kitnirc modules. May or may not work.
 ## op.py
 Request OP from the bot, can also give OP to other users. Can set TOPIC as well.
 
+Usage:
+```
+op [user(s)]
+topic <topic string>
+```
+
 ## buffalo.py
 Banana-module, only better.
 
