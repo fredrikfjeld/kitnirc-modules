@@ -67,12 +67,14 @@ class OpModule(Module):
         else:
             self.reply_to = actor
 
-        if len(args) == 1:
-          client.reply(recipient, actor, "Ett argument: %s" % args[0])
+        if len(args) == 0:
+          client.reply(recipient, actor, "Du blir OP snart.")
+        elif len(args) == 1:
+          client.reply(recipient, actor, "Du vil gi OP til %s." % args[0])
         elif len(args) == 2:
-          client.reply(recipient, actor, "To argumenter: %r og %r" % (args[0], args[1]))
+          client.reply(recipient, actor, "To argumenter? Hva faen? %r og %r" % (args[0], args[1]))
         else:
-          client.reply(recipient, actor, "Op til deg! Op til deg! Op til ALLE SAMMEN!")
+          client.reply(recipient, actor, "Neineinei, dette var bare tull.")
 
         _log.info("OP requested by %s" % actor)
 
