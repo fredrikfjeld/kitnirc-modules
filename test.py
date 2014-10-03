@@ -31,7 +31,7 @@ class TestModule(Module):
 
         client.reply(recipient, actor, "Fin kommando! Kommandoen var %r og argumentet var %r." % (args[0], args[1]))
 
-        return True
+        return False
 
 
 # Let KitnIRC know what module class it should be loading.
