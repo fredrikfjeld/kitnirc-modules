@@ -58,8 +58,12 @@ class OpModule(Module):
           _log.info("OP given to %s by %s" % (args[0], actor))
           client.reply(recipient, actor, "Wish granted.")
 
-        elif len(args) == 2:
-          client.reply(recipient, actor, "To argumenter? Hva faen? %r og %r" % (args[0], args[1]))
+        elif len(args) > 1:
+          # Gi OP til nickene som kommer etter op-kommandoen
+          for item in args:
+            client.mode(recipient, add={'o': [item]})
+            _log.info("OP given to %s by %s" % (item, actor))
+          client.reply(recipient, actor, "Wishes granted.")
 
         else:
           client.reply(recipient, actor, "Neineinei, dette var bare tull.")
