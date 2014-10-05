@@ -1,6 +1,7 @@
 import logging
 
 import time
+import csv
 
 from kitnirc.client import Channel, User
 from kitnirc.modular import Module
@@ -19,7 +20,13 @@ class LogModule(Module):
     def respond(self, client, actor, recipient, message):
         message = message.strip()
         timestamp = int(time.time())
-        _log.info("Comment by %r in %r at %r: %r", actor, recipient, timestamp, message)
+        _log.info("Comment by %r in %s at %r: %r", actor, recipient, timestamp, message)
+
+        with open('chatlog.csv', 'ab') as csvfile:
+          logwriter = csv.writer(csvfile, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+          logwriter.writerow([timestamp, recipient, actor, message])
+
+        return False
 
 # Let KitnIRC know what module class it should be loading.
 module = LogModule
