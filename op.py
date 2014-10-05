@@ -38,6 +38,7 @@ class OpModule(Module):
 
     @Module.handle('OP')
     def op(self, client, actor, recipient, *args):
+        _log.error("op-kommando")
         actor = User(actor)
         if not is_admin(self.controller, client, actor):
           _log.info("Unauthorized OP request by %s" % actor)
@@ -72,7 +73,7 @@ class OpModule(Module):
           client.reply(recipient, actor, "Neineinei, dette var bare tull.")
 
     @Module.handle('TOPIC')
-    def op(self, client, actor, recipient, *args):
+    def topic(self, client, actor, recipient, *args):
         actor = User(actor)
         if not is_admin(self.controller, client, actor):
           _log.info("Unauthorized TOPIC attempt by %s" % actor)
