@@ -54,7 +54,6 @@ class OpModule(Module):
           client.mode(recipient, add={'o': [actor.nick]})
           _log.info("OP given to %s" % actor)
           client.emote(recipient, "gave OP.")
-          client.topic(recipient, "emne!")
 
         elif len(args) == 1:
           # Gi OP til nicket som kommer etter op-kommandoen
