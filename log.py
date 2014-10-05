@@ -1,5 +1,7 @@
 import logging
 
+import time
+
 from kitnirc.client import Channel, User
 from kitnirc.modular import Module
 from kitnirc.contrib.admintools import is_admin
@@ -16,7 +18,8 @@ class LogModule(Module):
     @Module.handle("PRIVMSG")
     def respond(self, client, actor, recipient, message):
         message = message.strip()
-        _log.info("Comment by %r in %r: %r", actor, recipient, message)
+        timestamp = int(time.time())
+        _log.info("Comment by %r in %r at %r: %r", actor, recipient, timestamp, message)
 
 # Let KitnIRC know what module class it should be loading.
 module = LogModule
