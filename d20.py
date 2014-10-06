@@ -53,6 +53,7 @@ class D20Module(Module):
         if len(args) == 0:
             client.mode(recipient, add={'v': [actor.nick]})
             _log.info("Throwing dice for %s" % actor)
+            # TODO: More randomness
             diceresult = randint(1,20)
 
             client.emote(recipient, "%s throws d20... %r" % (actor.nick, diceresult))
