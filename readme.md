@@ -13,9 +13,12 @@ topic <topic string>
 
 
 ## log.py
-Currently just logging to the log output of the kitnirc srcipt.
+Logs chat activity to the log output from kitnirc as well as a csv-file.
+TODO: Separate csv-files per channel. Also some mysql functionality.
 
-TODO: Add some text or mysql functionality.
+
+## d20.py
+Throws 20 sided dice. Fun for all the family!
 
 
 ## buffalo.py
