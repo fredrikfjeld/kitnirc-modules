@@ -22,7 +22,7 @@ class LogModule(Module):
         timestamp = int(time.time())
         _log.info("Comment by %s in %s at %r: %s", actor, recipient, timestamp, message)
 
-        with open('chatlog.csv', 'ab') as csvfile:
+        with open('chatlog.csv', 'a+') as csvfile:
           logwriter = csv.writer(csvfile, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL)
           logwriter.writerow([timestamp, recipient, actor, message])
 
