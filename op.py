@@ -22,6 +22,7 @@ class OpModule(Module):
     @Module.handle("COMMANDS")
     def register_commands(self, client, *args):
         _log.info("Registering commands...")
+        self.add_command(client, "voice", "VOICE", "Voice someone!")
         self.add_command(client, "op", "OP", "OP someone!")
         self.add_command(client, "topic", "TOPIC", "Set topic!")
 
@@ -36,14 +37,13 @@ class OpModule(Module):
     def stop(self, *args, **kwargs):
         self.unregister_commands(self.controller.client)
 
-    @Module.handle('OP')
-    def op(self, client, actor, recipient, *args):
-        _log.error("op-kommando")
+    @Module.handle('VOICE')
+    def voice(self, client, actor, recipient, *args):
         actor = User(actor)
         if not is_admin(self.controller, client, actor):
-          _log.info("Unauthorized OP request by %s" % actor)
-          client.reply(recipient, actor, "Du er ikke definert som en admin. Din snik.")
-          return True
+            _log.info("Unauthorized OP request by %s" % actor)
+            client.reply(recipient, actor, "Du er ikke definert som en admin. Din snik.")
+            return True
 
         if isinstance(recipient, Channel):
             self.reply_to = recipient
@@ -51,34 +51,70 @@ class OpModule(Module):
             self.reply_to = actor
 
         if len(args) == 0:
-          # Gi OP til den som sendte kommandoen
-          client.mode(recipient, add={'o': [actor.nick]})
-          _log.info("OP given to %s" % actor)
-          client.emote(recipient, "gave OP.")
+            # Gi voice til den som sendte kommandoen
+            client.mode(recipient, add={'v': [actor.nick]})
+            _log.info("Voice given to %s" % actor)
+            client.emote(recipient, "gave voice.")
 
         elif len(args) == 1:
-          # Gi OP til nicket som kommer etter op-kommandoen
-          client.mode(recipient, add={'o': [args[0]]})
-          _log.info("OP given to %s by %s" % (args[0], actor))
-          client.reply(recipient, actor, "Wish granted.")
+            # Gi voice til nicket som kommer etter op-kommandoen
+            client.mode(recipient, add={'v': [args[0]]})
+            _log.info("Voice given to %s by %s" % (args[0], actor))
+            client.reply(recipient, actor, "Wish granted.")
 
         elif len(args) > 1:
-          # Gi OP til nickene som kommer etter op-kommandoen
-          for item in args:
-            client.mode(recipient, add={'o': [item]})
-            _log.info("OP given to %s by %s" % (item, actor))
-          client.reply(recipient, actor, "Wishes granted.")
+            # Gi voice til nickene som kommer etter op-kommandoen
+            for item in args:
+                client.mode(recipient, add={'v': [item]})
+                _log.info("Voice given to %s by %s" % (item, actor))
+            client.reply(recipient, actor, "Wishes granted.")
 
         else:
-          client.reply(recipient, actor, "Neineinei, dette var bare tull.")
+            client.reply(recipient, actor, "Neineinei, dette var bare tull.")
+
+    @Module.handle('OP')
+    def op(self, client, actor, recipient, *args):
+        _log.error("op-kommando")
+        actor = User(actor)
+        if not is_admin(self.controller, client, actor):
+            _log.info("Unauthorized OP request by %s" % actor)
+            client.reply(recipient, actor, "Du er ikke definert som en admin. Din snik.")
+            return True
+
+        if isinstance(recipient, Channel):
+            self.reply_to = recipient
+        else:
+            self.reply_to = actor
+
+        if len(args) == 0:
+            # Gi OP til den som sendte kommandoen
+            client.mode(recipient, add={'o': [actor.nick]})
+            _log.info("OP given to %s" % actor)
+            client.emote(recipient, "gave OP.")
+
+        elif len(args) == 1:
+            # Gi OP til nicket som kommer etter op-kommandoen
+            client.mode(recipient, add={'o': [args[0]]})
+            _log.info("OP given to %s by %s" % (args[0], actor))
+            client.reply(recipient, actor, "Wish granted.")
+
+        elif len(args) > 1:
+            # Gi OP til nickene som kommer etter op-kommandoen
+            for item in args:
+                client.mode(recipient, add={'o': [item]})
+                _log.info("OP given to %s by %s" % (item, actor))
+            client.reply(recipient, actor, "Wishes granted.")
+
+        else:
+            client.reply(recipient, actor, "Neineinei, dette var bare tull.")
 
     @Module.handle('TOPIC')
     def topic(self, client, actor, recipient, *args):
         actor = User(actor)
         if not is_admin(self.controller, client, actor):
-          _log.info("Unauthorized TOPIC attempt by %s" % actor)
-          client.reply(recipient, actor, "Du er ikke definert som en admin. Din snik.")
-          return True
+            _log.info("Unauthorized TOPIC attempt by %s" % actor)
+            client.reply(recipient, actor, "Du er ikke definert som en admin. Din snik.")
+            return True
 
         if isinstance(recipient, Channel):
             self.reply_to = recipient
