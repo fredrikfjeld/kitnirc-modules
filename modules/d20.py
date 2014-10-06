@@ -1,5 +1,7 @@
 import logging
 
+import csv
+import time
 from random import randint
 
 from kitnirc.client import Channel, User
@@ -44,6 +46,7 @@ class D20Module(Module):
     @Module.handle('THROWDICE')
     def dice(self, client, actor, recipient, *args):
         actor = User(actor)
+        timestamp = int(time.time())
 
         if isinstance(recipient, Channel):
             self.reply_to = recipient
@@ -60,8 +63,18 @@ class D20Module(Module):
 
             if diceresult == 20:
                 client.mode(recipient, add={'v': [actor.nick]})
+
+                with open('winstats.csv', 'a+') as csvfile:
+                    logwriter = csv.writer(csvfile, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+                    logwriter.writerow([timestamp, recipient, actor.nick, "win"])
+
                 client.reply(recipient, actor, "Yay! :)")
+
             elif diceresult == 1:
+
+                with open('winstats.csv', 'a+') as csvfile:
+                    logwriter = csv.writer(csvfile, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+                    logwriter.writerow([timestamp, recipient, actor.nick, "fail"])
                 client.reply(recipient, actor, "TODO: Kick :)")
 
         else:
@@ -70,12 +83,58 @@ class D20Module(Module):
     @Module.handle('WINNERS')
     def winners(self, client, actor, recipient, *args):
         actor = User(actor)
-        # TODO: Save and present winners
+        with open('winstats.csv', 'rb') as csvfile:
+            reader = csv.reader(csvfile,delimiter=';')
+            rownum = 0
+            winners = {}
+            for row in reader:
+                colnum = 0
+                for col in row:
+                    _log.info("Col number %r" % colnum)
+                    if colnum == 2:
+                        nick = col
+                    elif colnum == 3:
+                        if col == "win":
+                            if nick in winners:
+                                winners[nick] += 1
+                            else:
+                                winners[nick] = 1
+
+                    colnum += 1
+
+                rownum += 1
+
+            for (player, score) in winners.items():
+                #TODO: Sort this list
+                client.msg(recipient, "%s -> %r win(s)" % (player, score))
 
     @Module.handle('LOSERS')
     def losers(self, client, actor, recipient, *args):
         actor = User(actor)
-        # TODO: Save and present losers
+        with open('winstats.csv', 'rb') as csvfile:
+            reader = csv.reader(csvfile,delimiter=';')
+            rownum = 0
+            failers = {}
+            for row in reader:
+                colnum = 0
+                for col in row:
+                    _log.info("Col number %r" % colnum)
+                    if colnum == 2:
+                        nick = col
+                    elif colnum == 3:
+                        if col == "fail":
+                            if nick in failers:
+                                failers[nick] += 1
+                            else:
+                                failers[nick] = 1
+
+                    colnum += 1
+
+                rownum += 1
+
+            for (player, score) in failers.items():
+                #TODO: Sort this list
+                client.msg(recipient, "%s -> %r fail(s)" % (player, score))
 
 # Let KitnIRC know what module class it should be loading.
 module = D20Module
