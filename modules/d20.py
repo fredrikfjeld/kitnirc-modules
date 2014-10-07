@@ -54,7 +54,6 @@ class D20Module(Module):
             self.reply_to = actor
 
         if len(args) == 0:
-            client.mode(recipient, add={'v': [actor.nick]})
             _log.info("Throwing dice for %s" % actor)
             # TODO: More randomness
             diceresult = randint(1,20)
