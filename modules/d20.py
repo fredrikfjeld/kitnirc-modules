@@ -3,6 +3,7 @@ import logging
 import csv
 import time
 from random import randint
+import operator
 
 from kitnirc.client import Channel, User
 from kitnirc.modular import Module
@@ -54,7 +55,7 @@ class D20Module(Module):
             self.reply_to = actor
 
         if len(args) == 0:
-            _log.info("Throwing dice for %s" % actor)
+            _log.debug("Throwing dice for %s in %s" % (actor, recipient))
             # TODO: More randomness
             diceresult = randint(1,20)
 
@@ -74,10 +75,11 @@ class D20Module(Module):
                 with open('winstats.csv', 'a+') as csvfile:
                     logwriter = csv.writer(csvfile, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL)
                     logwriter.writerow([timestamp, recipient, actor.nick, "fail"])
-                client.reply(recipient, actor, "TODO: Kick :)")
+                client.reply(recipient, actor, "Fail!")
+                client.mode(recipient, remove={'v': [actor.nick]})
 
         else:
-            client.reply(recipient, actor, "Denne kommandoen tar ingen argumenter.")
+            client.reply(recipient, actor, "This command does not take arguments.")
 
     @Module.handle('WINNERS')
     def winners(self, client, actor, recipient, *args):
@@ -89,7 +91,7 @@ class D20Module(Module):
             for row in reader:
                 colnum = 0
                 for col in row:
-                    _log.info("Col number %r" % colnum)
+                    _log.debug("Col number %r" % colnum)
                     if colnum == 2:
                         nick = col
                     elif colnum == 3:
@@ -103,9 +105,13 @@ class D20Module(Module):
 
                 rownum += 1
 
-            for (player, score) in winners.items():
-                #TODO: Sort this list
-                client.msg(recipient, "%s -> %r win(s)" % (player, score))
+            sorted_winners = sorted(winners.items(), key=operator.itemgetter(1), reverse=True)
+            count = 0
+            client.msg(recipient, "Hall of win:")
+            for (player, score) in sorted_winners:
+                if count < 5:
+                    client.msg(recipient, "%s -> %r win(s)" % (player, score))
+                    count = count + 1
 
     @Module.handle('LOSERS')
     def losers(self, client, actor, recipient, *args):
@@ -117,7 +123,7 @@ class D20Module(Module):
             for row in reader:
                 colnum = 0
                 for col in row:
-                    _log.info("Col number %r" % colnum)
+                    _log.debug("Col number %r" % colnum)
                     if colnum == 2:
                         nick = col
                     elif colnum == 3:
@@ -131,9 +137,13 @@ class D20Module(Module):
 
                 rownum += 1
 
-            for (player, score) in failers.items():
-                #TODO: Sort this list
-                client.msg(recipient, "%s -> %r fail(s)" % (player, score))
+            sorted_failers = sorted(failers.items(), key=operator.itemgetter(1), reverse=True)
+            count = 0
+            client.msg(recipient, "Hall of fail:")
+            for (player, score) in sorted_failers:
+                if count < 5:
+                    client.msg(recipient, "%s -> %r fail(s)" % (player, score))
+                    count = count + 1
 
 # Let KitnIRC know what module class it should be loading.
 module = D20Module
